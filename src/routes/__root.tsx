@@ -8,7 +8,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
-import appCss from '../styles.css?url'
+import appCss from '../tailwind.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 
@@ -27,7 +27,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'iCanchero | Reserva canchas deportivas',
+      },
+      {
+        name: 'description',
+        content:
+          'Encuentra y reserva canchas deportivas en minutos con iCanchero.',
+      },
+      {
+        name: 'theme-color',
+        content: '#191B35',
       },
     ],
     links: [
@@ -42,7 +51,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="es">
       <head>
         <HeadContent />
       </head>
