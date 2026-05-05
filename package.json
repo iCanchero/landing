@@ -6,9 +6,10 @@
     "#/*": "./src/*"
   },
   "scripts": {
-    "dev": "vite dev --port 3000",
-    "build": "vite build",
-    "preview": "vite preview",
+    "dev": "bun --bun vite dev --port 3000",
+    "build": "bun --bun vite build",
+    "build:github-pages": "bun --bun run build && cp .output/public/_shell.html .output/public/index.html && cp .output/public/_shell.html .output/public/404.html && touch .output/public/.nojekyll",
+    "preview": "bun --bun vite preview",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier --write . && eslint --fix",
