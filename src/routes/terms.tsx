@@ -52,6 +52,25 @@ function TermsPage() {
               actividad en su cuenta.
             </p>
 
+            <h3>1.1 Nombres de usuario e identidad pública</h3>
+            <p>
+              Los nombres visibles, nombres de usuario, fotografías y demás
+              elementos del perfil público no deben suplantar a otras personas,
+              clubes o a iCanchero; generar confusión sobre una afiliación
+              oficial; infringir derechos de terceros; ni utilizarse para
+              fraude, acoso, abuso o actividades contrarias a estos términos.
+            </p>
+            <p>
+              Los nombres de usuario se asignan para su uso dentro de iCanchero
+              y no otorgan propiedad sobre un identificador específico. Podemos
+              rechazar, reservar, suspender, reasignar o modificar un nombre de
+              usuario cuando sea razonablemente necesario para prevenir
+              suplantación, confusión, abuso, infracciones, riesgos de seguridad
+              o incumplimientos legales. Cuando sea posible, notificaremos a la
+              persona titular de la cuenta y facilitaremos un identificador de
+              reemplazo.
+            </p>
+
             <h3>2. Reservas y pagos</h3>
             <p>
               iCanchero facilita la reserva de canchas deportivas. Las
@@ -112,12 +131,6 @@ function TermsPage() {
             <h3>10. Contacto</h3>
             <p>
               iCanchero
-              <br />
-              Privada Maple 5, Los Sauces
-              <br />
-              Tepatitlán de Morelos, 47600
-              <br />
-              México
               <br />
               icancheroapp@gmail.com
             </p>

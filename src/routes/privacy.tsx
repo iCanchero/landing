@@ -49,7 +49,8 @@ function PrivacyPage() {
             <p>
               Recopilamos información que usted proporciona al crear su cuenta,
               reservar canchas o comunicarse con nosotros, como datos de
-              contacto, credenciales, datos de pago y, con permiso, ubicación.
+              contacto, credenciales, nombre visible, nombre de usuario, foto de
+              perfil, datos de pago y, con permiso, ubicación.
             </p>
             <p>
               También recopilamos información técnica de forma automática, como
@@ -60,6 +61,11 @@ function PrivacyPage() {
             <h3>2. ¿Cómo utilizamos su información?</h3>
             <ul>
               <li>Crear y gestionar cuentas.</li>
+              <li>
+                Mostrar el perfil público y permitir que otros jugadores lo
+                encuentren o inviten mediante su nombre visible o nombre de
+                usuario, sin mostrar su correo o teléfono.
+              </li>
               <li>Gestionar reservas y pagos.</li>
               <li>Enviar comunicaciones operativas y promocionales.</li>
               <li>Proteger la seguridad de nuestros servicios.</li>
@@ -114,12 +120,6 @@ function PrivacyPage() {
             <h3>10. Contacto</h3>
             <p>
               iCanchero
-              <br />
-              Privada Maple 5, Los Sauces
-              <br />
-              Tepatitlán de Morelos, 47600
-              <br />
-              México
               <br />
               icancheroapp@gmail.com
             </p>
