@@ -1,0 +1,2 @@
+# Let Vite select .env files by mode instead of preloading them into process.env.
+env = false

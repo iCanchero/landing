@@ -9,9 +9,10 @@ import { nitro } from 'nitro/vite'
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
+  // Prerendering must reach its own preview server, even with dev running on localhost.
+  preview: { host: '127.0.0.1' },
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     tailwindcss(),
     tanstackStart({
       pages: [{ path: '/' }, { path: '/terms' }, { path: '/privacy' }],
@@ -21,8 +22,11 @@ const config = defineConfig({
       },
       spa: {
         enabled: true,
+        // Keep the shell's prerender task separate from the marketing homepage.
+        maskPath: '/?__spa_shell=1',
       },
     }),
+    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
     viteReact(),
   ],
 })

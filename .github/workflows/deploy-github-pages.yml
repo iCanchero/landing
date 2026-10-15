@@ -30,8 +30,6 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build static SPA output
-        env:
-          VITE_PLAYERS_API_URL: ${{ vars.VITE_PLAYERS_API_URL || 'https://api.icanchero.com/api/players' }}
         run: bun run build:github-pages
 
       - name: Setup Pages

@@ -1,213 +1,105 @@
-Welcome to your new TanStack Start app! 
+# iCanchero Landing
 
-# Getting Started
+Public marketing pages for iCanchero, built with React, TanStack Start, and
+Tailwind CSS. `/terms` and `/privacy` load published legal documents from the
+Players API in the browser, including an optional immutable `?version=<UUID>`.
 
-To run this application:
+## Local development
 
-```bash
-bun install
-bun --bun run dev
-```
-
-# Building For Production
-
-To build this application for production:
+Use Bun to match the GitHub Pages workflow and the tracked `bun.lock`:
 
 ```bash
-bun --bun run build
+bun install --frozen-lockfile
+bun run dev
 ```
 
-## Testing
+The development server runs on port 3000. Vite selects the Players API at build
+time using the checked-in mode files:
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+| Command                                        | Env file           | Players API                                                  |
+| ---------------------------------------------- | ------------------ | ------------------------------------------------------------ |
+| `bun run dev`                                  | `.env.development` | `https://paulenovo-wsl-ubuntu.tail4c02d6.ts.net/api/players` |
+| `bun run build` / `bun run build:github-pages` | `.env.production`  | `https://api.icanchero.com/api/players`                      |
+
+`bunfig.toml` disables Bun's automatic env loading so Vite controls mode
+precedence. Mode files override the generic `.env`; to use your Mac API locally,
+put `VITE_PLAYERS_API_URL=http://paulmac:7070/api/players` in
+`.env.development.local` (ignored by Git). Restart the dev server after changes.
+An explicitly exported shell/CI variable still takes precedence over Vite's env
+files. The GitHub Pages workflow uses `.env.production` without a repository
+variable override. `VITE_*` values are public and bundled into the browser code.
+
+## Verification
 
 ```bash
-bun --bun run test
+bun run typecheck
+bun run test
+bun run lint
+bun run build
+bun run build:github-pages
 ```
 
-## Styling
+Tests mock legal-document requests; they do not validate the live API. Devtools
+are available during development and stripped from production builds.
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+## Production output
 
-### Removing Tailwind CSS
+The Start configuration keeps prerendering for `/`, `/terms`, and `/privacy`,
+plus a static SPA fallback. The shell uses `/?__spa_shell=1` as its mask URL so
+its prerender task does not replace the homepage task. The checked-in GitHub Actions workflow installs with
+`bun install --frozen-lockfile`, runs `bun run build:github-pages`, and uploads
+`.output/public` to GitHub Pages. The Pages script preserves the prerendered
+homepage in `index.html`, copies the SPA shell to `404.html` for client navigation,
+and creates `.nojekyll`. Deployments run on pushes to `main` or manual workflow
+dispatch.
 
-If you prefer not to use Tailwind CSS:
+The Pages build verifies the rendered homepage, legal page files, SPA fallback,
+and referenced assets before upload. It rejects development-server HTML. The
+preview server binds to `127.0.0.1` so prerendering does not reach a running
+development server through a different `localhost` address.
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Uninstall the packages: `bun install @tailwindcss/vite tailwindcss -D`
+GitHub Pages publishes only `.output/public`; it does not run `bun run start`
+or any files in `.output/server`. The env values are compiled into the client
+JavaScript, and legal documents are fetched by the browser from the external
+Players API.
 
-## Linting & Formatting
-
-
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+For a local Bun server instead:
 
 ```bash
-bun --bun run lint
-bun --bun run format
-bun --bun run check
+bun run build
+bun run start
 ```
 
+Nitro selects its Bun preset when built with this project's Bun scripts.
+This starts `.output/server/index.mjs`; deploy the complete `.output/` directory
+when using a Bun host. For a Node server, build with
+`NITRO_PRESET=node-server bun run build` and run
+`node .output/server/index.mjs` instead. Node-based tooling and Node deployments
+require Node.js 22.12 or newer.
 
-## Shadcn
+## TanStack Start stable baseline
 
-Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+Start 1.169 is the first stable release; this project uses 1.169.2 or newer,
+Vite 8, and the published Nitro package through `nitro/vite`, replacing the old
+Nitro nightly alias. Nitro itself still ships as a beta. TanStack dependencies
+use explicit version ranges rather than `latest`; update `bun.lock` whenever
+dependencies change.
+
+The app uses Start's built-in client/server entries, a `getRouter()` factory,
+and per-router Query clients. It does not use the removed `useSession` or
+`.inputValidator()` APIs, request middleware, or server functions, so those RC
+migration changes require no application rewrite.
+
+Reference: [TanStack RC migration guide](https://tanstack.com/start/latest/docs/framework/react/migrate-from-release-candidate).
+
+## UI components and formatting
+
+Compose the existing components under `src/components/ui`. To add a shadcn
+component, use the project package runner:
 
 ```bash
-pnpm dlx shadcn@latest add button
+bunx --bun shadcn@latest add button
 ```
 
-
-
-## Routing
-
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-  
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-  
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).
+`bun run check` checks repository formatting; `bun run format` rewrites it and
+runs ESLint fixes.
